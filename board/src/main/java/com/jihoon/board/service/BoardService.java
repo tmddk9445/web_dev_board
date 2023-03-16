@@ -1,11 +1,14 @@
 package com.jihoon.board.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jihoon.board.common.constant.ResponseMessage;
 import com.jihoon.board.dto.request.board.PostBoardDto;
 import com.jihoon.board.dto.response.ResponseDto;
+import com.jihoon.board.dto.response.board.GetListResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.entity.BoardEntity;
 import com.jihoon.board.entity.UserEntity;
@@ -41,4 +44,22 @@ public class BoardService {
     return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
   }
+
+  public ResponseDto<List<GetListResponseDto>> getList() {
+
+    List<GetListResponseDto> data = null;
+
+    try {
+
+        List<BoardEntity> boardEntityList = boardRepository.findByOrderByBoardWriteDatetimeDesc();
+        data = GetListResponseDto.copyList(boardEntityList);
+
+    } catch(Exception exception) {
+        exception.printStackTrace();
+        return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+    }
+
+    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
+}
 }
