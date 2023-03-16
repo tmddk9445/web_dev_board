@@ -8,17 +8,24 @@ import org.springframework.stereotype.Service;
 import com.jihoon.board.common.constant.ResponseMessage;
 import com.jihoon.board.dto.request.board.PostBoardDto;
 import com.jihoon.board.dto.response.ResponseDto;
+import com.jihoon.board.dto.response.board.GetBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetListResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
 import com.jihoon.board.entity.BoardEntity;
+import com.jihoon.board.entity.CommentEntity;
+import com.jihoon.board.entity.LikyEntity;
 import com.jihoon.board.entity.UserEntity;
 import com.jihoon.board.repository.BoardRepository;
+import com.jihoon.board.repository.CommentRepository;
+import com.jihoon.board.repository.LikyRepository;
 import com.jihoon.board.repository.UserRepository;
 
 @Service
 public class BoardService {
   
   @Autowired private BoardRepository boardRepository;
+  @Autowired private LikyRepository likyRepository;
+  @Autowired private CommentRepository commentRepository;
   @Autowired private UserRepository userRepository;
 
   public ResponseDto<PostBoardResponseDto> postBoard(String email, PostBoardDto dto) {
@@ -40,6 +47,29 @@ public class BoardService {
       return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
     }
 
+
+    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
+  }
+
+  public ResponseDto<GetBoardResponseDto> getBoard(int boardNumber) {
+
+    GetBoardResponseDto data = null;
+
+    try {
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_BOARD);
+
+      List<LikyEntity> likyList = likyRepository.findByBoardNumber(boardNumber);
+      List<CommentEntity> commentList = commentRepository.findByBoardNumberOrderByWriteDatetimeDesc(boardNumber);
+
+      data = new GetBoardResponseDto(boardEntity, commentList, likyList);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+    }
 
     return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
