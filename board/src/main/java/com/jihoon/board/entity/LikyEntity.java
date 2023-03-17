@@ -26,4 +26,12 @@ public class LikyEntity {
 
     private String userProfileUrl; 
     private String userNickname;
+
+    public LikyEntity(UserEntity userEntity, int boardNumber) {
+        this.userEmail = userEntity.getEmail();
+        this.boardNumber = boardNumber;
+        this.userProfileUrl = userEntity.getProfile();
+        this.userNickname = userEntity.getNickname();
+    }
+    
 }
