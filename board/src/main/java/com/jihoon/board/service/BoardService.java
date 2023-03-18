@@ -9,34 +9,39 @@ import com.jihoon.board.common.constant.ResponseMessage;
 import com.jihoon.board.dto.request.board.LikeDto;
 import com.jihoon.board.dto.request.board.PatchBoardDto;
 import com.jihoon.board.dto.request.board.PostBoardDto;
+import com.jihoon.board.dto.request.board.PostCommentDto;
 import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.board.DeleteBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetBoardResponseDto;
 import com.jihoon.board.dto.response.board.GetListResponseDto;
 import com.jihoon.board.dto.response.board.GetMyListResponseDto;
+import com.jihoon.board.dto.response.board.GetSearchListResponseDto;
 import com.jihoon.board.dto.response.board.LikeResponseDto;
 import com.jihoon.board.dto.response.board.PatchBoardResponseDto;
 import com.jihoon.board.dto.response.board.PostBoardResponseDto;
+import com.jihoon.board.dto.response.board.PostCommentResponseDto;
 import com.jihoon.board.entity.BoardEntity;
 import com.jihoon.board.entity.CommentEntity;
 import com.jihoon.board.entity.LikyEntity;
+import com.jihoon.board.entity.RelatedSearchWordEntity;
+import com.jihoon.board.entity.SearchWordLogEntity;
 import com.jihoon.board.entity.UserEntity;
 import com.jihoon.board.repository.BoardRepository;
 import com.jihoon.board.repository.CommentRepository;
 import com.jihoon.board.repository.LikyRepository;
+import com.jihoon.board.repository.RelatedSearchWordRepository;
+import com.jihoon.board.repository.SearchWordLogRepository;
 import com.jihoon.board.repository.UserRepository;
 
 @Service
 public class BoardService {
 
-  @Autowired
-  private BoardRepository boardRepository;
-  @Autowired
-  private LikyRepository likyRepository;
-  @Autowired
-  private CommentRepository commentRepository;
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private BoardRepository boardRepository;
+  @Autowired private LikyRepository likyRepository;
+  @Autowired private CommentRepository commentRepository;
+  @Autowired private UserRepository userRepository;
+  @Autowired private SearchWordLogRepository searchWordLogRepository;
+  @Autowired private RelatedSearchWordRepository relatedSearchWordRepository;
 
   public ResponseDto<PostBoardResponseDto> postBoard(String email, PostBoardDto dto) {
 
@@ -60,6 +65,41 @@ public class BoardService {
 
     return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
+  }
+
+  public ResponseDto<PostCommentResponseDto> postComment(String email, PostCommentDto dto) {
+
+    PostCommentResponseDto data = null;
+
+    int boardNumber = dto.getBoardNumber();
+
+    try {
+
+      UserEntity userEntity = userRepository.findByEmail(email);
+      if(userEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);      
+      if(boardEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_BOARD);
+
+      CommentEntity commentEntity = new CommentEntity(userEntity, dto);
+      commentRepository.save(commentEntity);
+
+      boardEntity.increaseCommentCount();
+      boardRepository.save(boardEntity);
+      
+      List<CommentEntity> commentList 
+        = commentRepository.findByBoardNumberOrderByWriteDatetimeDesc(boardNumber);
+
+      List<LikyEntity> likeList = likyRepository.findByBoardNumber(boardNumber);
+
+      data = new PostCommentResponseDto(boardEntity, commentList, likeList);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+    }
+
+    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
   }
 
   public ResponseDto<LikeResponseDto> like(String email, LikeDto dto) {
@@ -166,6 +206,32 @@ public class BoardService {
     return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
   }
+
+  public ResponseDto<List<GetSearchListResponseDto>> getSearchList(String searchWord, String previousSearchWord) {
+
+    List<GetSearchListResponseDto> data = null;
+
+    try {
+
+        SearchWordLogEntity searchWordLogEntity = new SearchWordLogEntity(searchWord);
+        searchWordLogRepository.save(searchWordLogEntity);
+
+        if (previousSearchWord != null && !previousSearchWord.isBlank()) {
+            RelatedSearchWordEntity relatedSearchWordEntity = new RelatedSearchWordEntity(searchWord, previousSearchWord);
+            relatedSearchWordRepository.save(relatedSearchWordEntity);
+        }
+
+        List<BoardEntity> boardList = boardRepository.findByBoardTitleContainsOrBoardContentContainsOrderByBoardWriteDatetimeDesc(searchWord, searchWord);
+        data = GetSearchListResponseDto.copyList(boardList);
+
+    } catch (Exception exception) {
+        exception.printStackTrace();
+        return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+    }
+
+    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
+}
 
   public ResponseDto<PatchBoardResponseDto> patchBoard(String email, PatchBoardDto dto) {
 

@@ -13,12 +13,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="RelatedSearchWord")
-@Table(name="RelatedSearchWord")
+@Entity(name="Relatedsearchword")
+@Table(name="Relatedsearchword")
 public class RelatedSearchWordEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int sequence;
     private String searchWord;
     private String previousSearchWord;
+
+    public RelatedSearchWordEntity(String searchWord, String previousSearchWord) {
+        this.searchWord = searchWord;
+        this.previousSearchWord = previousSearchWord;
+    }
 }
