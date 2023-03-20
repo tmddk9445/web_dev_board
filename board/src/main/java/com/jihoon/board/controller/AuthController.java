@@ -13,12 +13,17 @@ import com.jihoon.board.dto.response.ResponseDto;
 import com.jihoon.board.dto.response.auth.SignInResponseDto;
 import com.jihoon.board.dto.response.auth.SignUpResponseDto;
 import com.jihoon.board.service.AuthService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
 @RequestMapping(ApiPattern.AUTH)
+@Api(description="인증 모듈")
 public class AuthController {
 
     @Autowired private AuthService authService;
