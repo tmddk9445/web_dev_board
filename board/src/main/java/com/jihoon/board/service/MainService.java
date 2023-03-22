@@ -1,10 +1,10 @@
 package com.jihoon.board.service;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.springframework.scheduling.annotation.Scheduled;
+// import org.jsoup.Jsoup;
+// import org.jsoup.nodes.Document;
+// import org.jsoup.nodes.Element;
+// import org.jsoup.select.Elements;
+// import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,26 +22,26 @@ public class MainService {
     //     System.out.println("시작 고정 딜레이 작업 : " + System.currentTimeMillis() / 1000);
     // }
 
-    @Scheduled(cron="2 * * * * ?")
-    public void scheduleCronJob() {
-        try {
-            crawlling();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
+    // @Scheduled(cron="2 * * * * ?")
+    // public void scheduleCronJob() {
+    //     try {
+    //         crawlling();
+    //     } catch (Exception exception) {
+    //         exception.printStackTrace();
+    //     }
+    // }
 
-    public void crawlling() throws Exception {
+    // public void crawlling() throws Exception {
 
-        Document document = Jsoup.connect("https://naver.com").get();
+    //     Document document = Jsoup.connect("https://naver.com").get();
 
-        Elements elements = document.select("#NM_FAVORITE > div.group_nav > ul.list_nav.NM_FAVORITE_LIST > li > a");
-        System.out.println(elements.size());
+    //     Elements elements = document.select("#NM_FAVORITE > div.group_nav > ul.list_nav.NM_FAVORITE_LIST > li > a");
+    //     System.out.println(elements.size());
 
-        for (Element element: elements) {
-            System.out.println(element.absUrl("href"));
-        }
+    //     for (Element element: elements) {
+    //         System.out.println(element.absUrl("href"));
+    //     }
 
-    }
+    // }
 
 }
