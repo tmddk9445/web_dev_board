@@ -37,6 +37,7 @@ public class AuthController {
         return response;
     }
 
+    @ApiOperation(value = "로그인", notes = "이메일, 비밀전호를 입력하면 일치할 경우 회원 정보, 토큰 그리고 토큰 만료 기간을 반환하고 실패할 경우 해당 메시지를 반환한다. ")
     @PostMapping(SIGN_IN)
     public ResponseDto<SignInResponseDto> signIn(@Valid @RequestBody SignInDto requestBody) {
         ResponseDto<SignInResponseDto> response = authService.signIn(requestBody);

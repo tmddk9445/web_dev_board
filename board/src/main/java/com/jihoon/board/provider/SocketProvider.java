@@ -35,7 +35,7 @@ public class SocketProvider extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession webSocketSession, TextMessage textMessage) throws Exception {
-        String messagePayload = textMessage.getPayload();
+        // String messagePayload = textMessage.getPayload();
         String room = webSocketSession.getHandshakeHeaders().getFirst("room");
 
         for (SocketGroup socketGroup: sessionList) {
