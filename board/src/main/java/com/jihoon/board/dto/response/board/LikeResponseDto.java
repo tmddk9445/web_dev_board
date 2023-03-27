@@ -10,13 +10,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@ApiModel(value="좋아요 기능 Response Body - data")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeResponseDto {
-  
-  private BoardEntity boardEntity;
-  private List<CommentEntity> commentList;
-  private List<LikyEntity> likeList;
-  
+    @ApiModelProperty(value="게시물 Entity", required=true)
+    private BoardEntity board;
+
+    @ApiModelProperty(value="댓글 Entity list", required=true)
+    private List<CommentEntity> commentList;
+
+    @ApiModelProperty(value="좋아요 Entity list", required=true)
+    private List<LikyEntity> likeList;
 }

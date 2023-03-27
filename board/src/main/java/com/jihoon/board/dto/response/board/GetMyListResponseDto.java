@@ -9,47 +9,65 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@ApiModel(value="본인 작성 게시물 리스트 가져오기 Response Body - data")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetMyListResponseDto {
-  
-  private int boardNumber;
-  private String boardTitle;
-  private String boardContent;
-  private String boardImgUrl;
-  private String boardWriteDatetime;
-  private int viewCount;
-  private String writerNickname;
-  private String writerProfileUrl;
-  private int commentCount;
-  private int likeCount;
 
-  public GetMyListResponseDto(BoardEntity boardEntity) {
+    @ApiModelProperty(value="게시물 번호", example="1", required=true)
+    private int boardNumber;
 
-    this.boardNumber = boardEntity.getBoardNumber();
-    this.boardTitle = boardEntity.getBoardTitle();
-    this.boardContent = boardEntity.getBoardContent();
-    this.boardImgUrl = boardEntity.getBoardImgUrl();
-    this.boardWriteDatetime = boardEntity.getBoardWriteDatetime();
-    this.viewCount = boardEntity.getViewCount();
-    this.writerNickname = boardEntity.getWriterNickname();
-    this.writerProfileUrl = boardEntity.getWriterProfileUrl();
-    this.commentCount = boardEntity.getCommentCount();
-    this.likeCount = boardEntity.getLikeCount();
-  }
+    @ApiModelProperty(value="게시물 제목", example="Board Title!!!", required=true)
+    private String boardTitle;
 
-  public static List<GetMyListResponseDto> copyList(List<BoardEntity> boardEntityList) {
+    @ApiModelProperty(value="게시물 내용", example="Board Content!!!", required=true)
+    private String boardContent;
 
-    List<GetMyListResponseDto> list = new ArrayList<GetMyListResponseDto>();
-  
-    for (BoardEntity boardEntity : boardEntityList) {
-      GetMyListResponseDto dto = new GetMyListResponseDto(boardEntity);
-      list.add(dto);
+    @ApiModelProperty(value="게시물 이미지 URL", example="http://~", required=false)
+    private String boardImgUrl;
 
+    @ApiModelProperty(value="게시물 작성일시", example="2023-03-23 17:20", required=true)
+    private String boardWriteDatetime;
+
+    @ApiModelProperty(value="조회 수", example="30", required=true)
+    private int viewCount;
+
+    @ApiModelProperty(value="작성자 닉네임", example="jiraynor", required=true)
+    private String writerNickname;
+
+    @ApiModelProperty(value="작성자 프로필 이미지 URL", example="http://~", required=false)
+    private String writerProfileUrl;
+
+    @ApiModelProperty(value="댓글 수", example="7", required=true)
+    private int commentCount;
+
+    @ApiModelProperty(value="좋아요 수", example="27", required=true)
+    private int likeCount;
+
+    public GetMyListResponseDto(BoardEntity boardEntity) {
+        this.boardNumber = boardEntity.getBoardNumber();
+        this.boardTitle = boardEntity.getBoardTitle();
+        this.boardContent = boardEntity.getBoardContent();
+        this.boardImgUrl = boardEntity.getBoardImgUrl();
+        this.boardWriteDatetime = boardEntity.getBoardWriteDatetime();
+        this.viewCount = boardEntity.getViewCount();
+        this.writerNickname = boardEntity.getWriterNickname();
+        this.writerProfileUrl = boardEntity.getWriterProfileUrl();
+        this.commentCount = boardEntity.getCommentCount();
+        this.likeCount = boardEntity.getLikeCount();
     }
 
-    return list;
+    public static List<GetMyListResponseDto> copyList(List<BoardEntity> boardEntityList) {
 
-  }
+        List<GetMyListResponseDto> list = new ArrayList<>();
+
+        for (BoardEntity boardEntity: boardEntityList) {
+            GetMyListResponseDto dto = new GetMyListResponseDto(boardEntity);
+            list.add(dto);
+        }
+
+        return list;
+
+    }
 }

@@ -7,12 +7,12 @@ import org.hibernate.validator.constraints.URL;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@ApiModel(value="유저 프로필 URL 수정 Request Body")
 @Data
 @NoArgsConstructor
 public class PatchProfileDto {
-  
-  @NotBlank
-  @URL
-  private String profile;
-  
+    @ApiModelProperty(value="프로필 사진 URL", example="http://~", required=true)
+    @NotBlank
+    @URL
+    private String profile;
 }
