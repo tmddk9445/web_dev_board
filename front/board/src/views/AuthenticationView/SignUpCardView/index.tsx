@@ -15,6 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { useSignUpStore } from 'src/stores';
+import axios from "axios";
 
 function FirstPage() {
 
@@ -72,12 +73,12 @@ function FirstPage() {
 
 function SecondPage() {
 
-  const { nickName, telNumber, address, addressDetail } = useSignUpStore();
-  const { setNickName, setTelNumber, setAddress, setAddressDetail } = useSignUpStore();
+  const { nickname, telNumber, address, addressDetail } = useSignUpStore();
+  const { setNickname, setTelNumber, setAddress, setAddressDetail } = useSignUpStore();
 
   return (
     <Box>
-      <TextField sx={{mt: '40px'}} fullWidth label="닉네임*" variant="standard" value={nickName} onChange={(event) => setNickName(event.target.value)} />
+      <TextField sx={{mt: '40px'}} fullWidth label="닉네임*" variant="standard" value={nickname} onChange={(event) => setNickname(event.target.value)} />
       <TextField sx={{mt: '40px'}} fullWidth label="휴대폰 번호*" variant="standard" value={telNumber} onChange={(event) => setTelNumber(event.target.value)} />
       <FormControl fullWidth variant="standard" sx={{mt: '40px'}}>
         <InputLabel>주소*</InputLabel>
@@ -105,7 +106,7 @@ export default function SignUpCardView({ setLoginView }: Props) {
 
   const [page, setPage] = useState<number>(1);
   const { email, password, passwordCheck } = useSignUpStore();
-  const { nickName, telNumber, address, addressDetail } = useSignUpStore();
+  const { nickname, telNumber, address, addressDetail } = useSignUpStore();
 
   const onNextButtonHandler = () => {
     //? 해당 문자열 변수가 빈값인지 확인
@@ -128,7 +129,7 @@ export default function SignUpCardView({ setLoginView }: Props) {
       setPage(1);
       return;
     }
-    if (!nickName || !telNumber || !address || !addressDetail) {
+    if (!nickname || !telNumber || !address || !addressDetail) {
       alert('모든 값을 입력하세요.');
       setPage(2);
       return;
@@ -138,12 +139,21 @@ export default function SignUpCardView({ setLoginView }: Props) {
       setPage(1);
       return;
     }
-
-    alert('회원가입 완료!');
     
-    const data = { email, password, nickName, telNumber, address, addressDetail };
+    const data = { email, password, nickname, telNumber, address: `${address} ${addressDetail}`};
 
-    console.log(data);
+    console.log('axios 이전!!');
+
+    axios.post("http://localhost:4040/auth/sign-up", data)
+    .then((response) => {
+      console.log('Success');
+    }).catch((error) => {
+      console.log(error.message);
+    });
+
+    // const response = await axios.post("http://localhost:4040/auth/sign-up", data);
+
+    console.log('axios 이후!!');
 
   }
 
