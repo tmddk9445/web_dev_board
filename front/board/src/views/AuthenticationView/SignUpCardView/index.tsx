@@ -16,6 +16,9 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { useSignUpStore } from 'src/stores';
 import axios from "axios";
+import ResponseDto from "src/apis/response";
+import { SignUpResponseDto } from "src/apis/response/auth";
+import { SIGN_UP_URL } from "src/constants/api";
 
 function FirstPage() {
 
@@ -142,18 +145,17 @@ export default function SignUpCardView({ setLoginView }: Props) {
     
     const data = { email, password, nickname, telNumber, address: `${address} ${addressDetail}`};
 
-    console.log('axios 이전!!');
-
-    axios.post("http://localhost:4040/auth/sign-up", data)
+    axios.post(SIGN_UP_URL, data)
     .then((response) => {
-      console.log('Success');
-    }).catch((error) => {
-      console.log(error.message);
+      const { result, message, data } = response.data as ResponseDto<SignUpResponseDto>; // as 강제 형 변환
+      if (result) setLoginView(true);
+      else alert(message);
+    })
+    .catch((error) => {
+      console.log(error.response.status);
     });
 
     // const response = await axios.post("http://localhost:4040/auth/sign-up", data);
-
-    console.log('axios 이후!!');
 
   }
 

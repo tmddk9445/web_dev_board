@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react'
+import axios from 'axios';
 import { Box, TextField, Typography, FormControl, InputLabel, Input, InputAdornment, IconButton, Button } from '@mui/material';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Visibility from '@mui/icons-material/Visibility';
@@ -6,12 +7,19 @@ import Visibility from '@mui/icons-material/Visibility';
 import { USER } from 'src/mock';
 import { useUserStore } from 'src/stores';
 import { useNavigate } from 'react-router-dom';
+import { SIGN_IN_URL } from 'src/constants/api';
+import ResponseDto from 'src/apis/response';
+import { SignInResponseDto } from 'src/apis/response/auth';
+import { SignInDto } from 'src/apis/request/auth';
+import { useCookies } from 'react-cookie';
 
 interface Props {
     setLoginView: Dispatch<SetStateAction<boolean>>
 }
 
 export default function LoginCardView({ setLoginView }: Props) {
+
+  const [cookies, setCookies] = useCookies();
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -27,17 +35,31 @@ export default function LoginCardView({ setLoginView }: Props) {
         alert('모든 값을 입력해주세요.');
         return;
     }
-    //? USER mock 데이터의 email과 password가 입력받은 email과 password와 일치하는지 검증
-    if (USER.email !== email || USER.password !== password) {
-        alert('로그인 정보가 일치하지 않습니다.');
-        return;
-    }
 
-    //? 로그인 처리
-    //? 쿠키에 로그인 데이터 (Token) 보관 
-    //? 스토어에 유저 데이터 보관
-    setUser(USER);
-    navigator('/');
+    const data: SignInDto = { email, password };
+
+    axios.post(SIGN_IN_URL, data)
+    .then((response) => {
+        const { result, message, data} = response.data as ResponseDto<SignInResponseDto>;
+        if (result && data) {
+          const { token, expiredTime, ...user  } = data;
+          //? 로그인 처리
+          //? 쿠키에 로그인 데이터 (Token) 보관
+          const now = new Date().getTime();
+          const expires = new Date(now + expiredTime);
+          setCookies('accessToken', token, { expires })
+          //? 스토어에 유저 데이터 보관
+          setUser(user);
+          navigator("/");
+        } else {
+          alert("로그인 정보가 잘못되었습니다.");
+        }
+    })
+    .catch((error) => {
+        console.log(error.message);
+    })
+
+
   }
 
   return (
