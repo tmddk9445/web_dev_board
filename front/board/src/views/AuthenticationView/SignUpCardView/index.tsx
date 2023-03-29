@@ -15,7 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { useSignUpStore } from 'src/stores';
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import ResponseDto from "src/apis/response";
 import { SignUpResponseDto } from "src/apis/response/auth";
 import { SIGN_UP_URL } from "src/constants/api";
@@ -146,17 +146,21 @@ export default function SignUpCardView({ setLoginView }: Props) {
     const data = { email, password, nickname, telNumber, address: `${address} ${addressDetail}`};
 
     axios.post(SIGN_UP_URL, data)
-    .then((response) => {
-      const { result, message, data } = response.data as ResponseDto<SignUpResponseDto>; // as 강제 형 변환
-      if (result) setLoginView(true);
-      else alert(message);
-    })
-    .catch((error) => {
-      console.log(error.response.status);
-    });
+    .then((response) => signUpResponseHandler(response))
+    .catch((error) => signUpErrorHandler(error));
 
     // const response = await axios.post("http://localhost:4040/auth/sign-up", data);
 
+  }
+
+  const signUpResponseHandler = (response: AxiosResponse<any, any>) => {
+    const { result, message, data } = response.data as ResponseDto<SignUpResponseDto>; // as 강제 형 변환
+      if (result) setLoginView(true);
+      else alert(message);
+  }
+
+  const signUpErrorHandler = (error: any) => {
+    console.log(error.response.status);
   }
 
   return (
