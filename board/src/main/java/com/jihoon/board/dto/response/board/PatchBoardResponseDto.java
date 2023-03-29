@@ -6,6 +6,8 @@ import com.jihoon.board.entity.BoardEntity;
 import com.jihoon.board.entity.CommentEntity;
 import com.jihoon.board.entity.LikyEntity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

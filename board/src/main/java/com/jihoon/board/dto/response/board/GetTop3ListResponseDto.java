@@ -6,6 +6,7 @@ import java.util.List;
 import com.jihoon.board.entity.BoardEntity;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
