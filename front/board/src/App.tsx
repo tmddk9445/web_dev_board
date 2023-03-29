@@ -12,11 +12,9 @@ import MyPageView from './views/MyPageView';
 import BoardWriteView from './views/Board/BoardWriteView';
 import BoardUpdateView from './views/Board/BoardUpdateView';
 import BoardDetailView from './views/Board/BoardDetailView';
-import { access } from 'fs';
 import { useUserStore } from './stores';
 import { useCookies } from 'react-cookie';
 import axios, { AxiosResponse } from 'axios';
-import { error } from 'console';
 import ResponseDto from './apis/response';
 import { authorizationHeader, GET_USER_URL } from './constants/api';
 import { GetUserResponseDto } from './apis/response/user';
@@ -39,7 +37,7 @@ function App() {
   const getUser = (accessToken: string) => {
     axios.get(GET_USER_URL, authorizationHeader(accessToken))
     .then((response) => getUserResponseHandler(response))
-    .catch(() => getUserErrorHandler(error));
+    .catch((error) => getUserErrorHandler(error));
   }
 
   const getUserResponseHandler = (response: AxiosResponse<any, any>) => {
