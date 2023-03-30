@@ -42,12 +42,11 @@ public class UserController {
         return response;
     }
 
-    @ApiOperation(value = "유저 정보 불러오기", notes = "Request Header에 Athorization에 Bearer Token을 포함하여 요청을 하면, 성공시 유저 정보를 반환, 실패시 실패 메시지를 반환")
+    @ApiOperation(value="유저 정보 불러오기", notes="Request Header Authorization에 Bearer Token을 포함하여 요청을 하면, 성공시 유저 정보를 반환, 실패시 실패 메세지를 반환")
     @GetMapping(GET_USER)
-    public ResponseDto<GetUserResponseDto> getUser(@AuthenticationPrincipal String email){
+    public ResponseDto<GetUserResponseDto> getUser(@AuthenticationPrincipal String email) {
         ResponseDto<GetUserResponseDto> response = userService.getUser(email);
         return response;
     }
-
 
 }
