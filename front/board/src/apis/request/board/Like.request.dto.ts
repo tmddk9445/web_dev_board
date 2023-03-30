@@ -1,5 +1,5 @@
 interface RequestDto {
-  boardNumber: number;
+    boardNumber: number;
 }
 
 export default RequestDto;

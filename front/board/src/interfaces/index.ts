@@ -1,10 +1,11 @@
-import Board from "./Board.interface";
-import Comment from "./Comment.interface";
-import Liky from "./Liky.interface";
-import User from "./User.interface";
+import Board from './Board.interface';
+import Comment from './Comment.interface';
+import Liky from './Liky.interface';
+import User from './User.interface';
 
 //? 인터페이스 관리
 export interface IPreviewItem {
+    boardNumber: number;
     img: string | null;
     writerProfile: string;
     writerNickname: string;
@@ -14,8 +15,6 @@ export interface IPreviewItem {
     likeCount: number;
     commentCount: number;
     viewCount: number;
-
-    boardNumber: number;
 }
 
 export interface IUser {
@@ -40,4 +39,4 @@ export interface ICommentItem {
     commentDatetime: string;
 }
 
-export type { Board, User, Liky, Comment};
+export type { Board, Comment, Liky, User };

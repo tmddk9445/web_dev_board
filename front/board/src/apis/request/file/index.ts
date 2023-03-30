@@ -1,3 +1,3 @@
-import Uploadto from './Upload.request.dto'
+import UploadDto from './Upload.request.dto';
 
-export type { Uploadto };
+export type { UploadDto };

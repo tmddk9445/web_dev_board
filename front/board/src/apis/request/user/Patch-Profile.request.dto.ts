@@ -1,5 +1,5 @@
 interface RequestDto {
-  profile: string;
+    profile: string;
 }
 
 export default RequestDto;

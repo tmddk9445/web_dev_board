@@ -1,5 +1,5 @@
 interface Dto {
-  top15SearchWordList: string[];
+    top15SearchWordList: string[];
 }
 
 export default Dto;

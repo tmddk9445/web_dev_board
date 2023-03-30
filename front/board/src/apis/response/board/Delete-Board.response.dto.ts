@@ -1,5 +1,5 @@
 interface Dto {
-  resultStatus: boolean;
+    resultStatus: boolean;
 }
 
 export default Dto;

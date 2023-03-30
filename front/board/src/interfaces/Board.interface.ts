@@ -4,12 +4,12 @@ interface Board {
   boardNumber: number;
   boardTitle: string;
   boardWriteDatetime: string;
-  commentContent: string;
+  commentCount: number;
   likeCount: number;
   viewCount: number;
   writerEmail: string;
   writerNickname: string;
-  writerProfileUrl: string;
+  writerProfileUrl?: string | null;
 }
 
 export default Board;

@@ -11,12 +11,12 @@ import { useUserStore } from 'src/stores';
 
 export default function NavigationBar() {
 
-  const [content, setContent] = useState<string>('');
-  
-  const { user } = useUserStore();
-
   const navigator = useNavigate();
   const path = useLocation();
+
+  const { user } = useUserStore();
+
+  const [content, setContent] = useState<string>('');
 
   const onSearchHandler = () => {
     if (!content.trim()) {

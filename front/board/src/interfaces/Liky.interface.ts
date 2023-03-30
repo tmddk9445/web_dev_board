@@ -1,7 +1,7 @@
 interface Liky {
-  boardNumber: number;
-  userProfileUrl?: string | null;
-  userNickname: string;
+    boardNumber: number;
+    userProfileUrl?: string | null;
+    userNickname: string;
 }
 
 export default Liky;

@@ -1,5 +1,5 @@
-interface requestDto {
-  file: File;
+interface RequestDto {
+    file: File
 }
 
-export default requestDto;
+export default RequestDto;

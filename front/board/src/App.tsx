@@ -1,6 +1,6 @@
 import './App.css';
 
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import AuthenticationView from './views/AuthenticationView';
@@ -12,8 +12,8 @@ import MyPageView from './views/MyPageView';
 import BoardWriteView from './views/Board/BoardWriteView';
 import BoardUpdateView from './views/Board/BoardUpdateView';
 import BoardDetailView from './views/Board/BoardDetailView';
-import { useUserStore } from './stores';
 import { useCookies } from 'react-cookie';
+import { useUserStore } from './stores';
 import axios, { AxiosResponse } from 'axios';
 import ResponseDto from './apis/response';
 import { authorizationHeader, GET_USER_URL } from './constants/api';
@@ -36,13 +36,13 @@ function App() {
 
   const getUser = (accessToken: string) => {
     axios.get(GET_USER_URL, authorizationHeader(accessToken))
-    .then((response) => getUserResponseHandler(response))
-    .catch((error) => getUserErrorHandler(error));
+      .then((response) => getUserResponseHandler(response))
+      .catch((error) => getUserErrorHandler(error));
   }
 
   const getUserResponseHandler = (response: AxiosResponse<any, any>) => {
     const { result, message, data } = response.data as ResponseDto<any>;
-    if(!result || !data) {
+    if (!result || !data) {
       return;
     }
     const user = data as GetUserResponseDto;
@@ -57,7 +57,6 @@ function App() {
     const accessToken = cookies.accessToken;
     if (accessToken) getUser(accessToken);
   }, []);
-    
 
   return (
     <>

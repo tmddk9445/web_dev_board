@@ -1,3 +1,3 @@
-import PatchProfileDto from './Patch-Profile.request.dto'
+import PatchProfileDto from './Patch-Profile.request.dto';
 
-export type { PatchProfileDto};
+export type { PatchProfileDto };
