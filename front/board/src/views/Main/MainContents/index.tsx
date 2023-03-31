@@ -4,8 +4,6 @@ import { Box, Grid, Pagination, Typography, Stack } from '@mui/material'
 
 import BoardListItem from 'src/components/BoardListItem'
 import PopularCard from 'src/components/PopularCard'
-import { IPreviewItem } from 'src/interfaces';
-import { BOARD_LIST } from 'src/mock';
 import { getPageCount } from 'src/utils';
 import { usePagingHook } from 'src/hooks';
 import axios, { AxiosResponse } from 'axios';
