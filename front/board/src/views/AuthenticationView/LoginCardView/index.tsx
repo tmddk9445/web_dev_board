@@ -1,17 +1,17 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from 'react'
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+
 import axios, { AxiosResponse } from 'axios';
 import { Box, TextField, Typography, FormControl, InputLabel, Input, InputAdornment, IconButton, Button } from '@mui/material';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Visibility from '@mui/icons-material/Visibility';
+import { VisibilityOff, Visibility }  from '@mui/icons-material';
 
+import { getExpires } from 'src/utils';
 import { useUserStore } from 'src/stores';
-import { useNavigate } from 'react-router-dom';
 import { SIGN_IN_URL } from 'src/constants/api';
 import { SignInDto } from 'src/apis/request/auth';
 import ResponseDto from 'src/apis/response';
 import { SignInResponseDto } from 'src/apis/response/auth';
-import { useCookies } from 'react-cookie';
-import { getExpires } from 'src/utils';
 
 interface Props {
     setLoginView: Dispatch<SetStateAction<boolean>>
@@ -19,7 +19,9 @@ interface Props {
 
 export default function LoginCardView({ setLoginView }: Props) {
 
+  //          Hook          //
   const navigator = useNavigate();
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const { setUser } = useUserStore();
 
@@ -27,6 +29,19 @@ export default function LoginCardView({ setLoginView }: Props) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<boolean>(false);
+
+  //          Event Handler          //
+  const onEmailKeyPressHandler = (event: KeyboardEvent<HTMLDivElement>) => {
+    if(event.key !== 'Enter') return;
+    if(!passwordRef.current) return;
+    passwordRef.current.focus();
+  }
+
+  const onPasswordKeyPressHandler = (event: KeyboardEvent<HTMLDivElement>) => {
+    if(event.key !== 'Enter') return;
+
+  }
 
   const onLoginHandler = () => {
     //? email 입력했는지 검증 / password 입력했는지 검증
@@ -41,6 +56,7 @@ export default function LoginCardView({ setLoginView }: Props) {
     .catch((error) => signInErrorHandler(error));
   }
 
+  //          Response Handler          //
   const signInResponseHandler = (response: AxiosResponse<any, any>) => {
     const { result, message, data } = response.data as ResponseDto<SignInResponseDto>;
     if (!result || !data) {
@@ -58,38 +74,70 @@ export default function LoginCardView({ setLoginView }: Props) {
     navigator('/');
   }
 
+  //          Error Handler          //
   const signInErrorHandler = (error: any) => {
     console.log(error.message);
   }
 
   return (
-    <Box display='flex' sx={{height: '100%', flexDirection: 'column', justifyContent: 'space-between'}}>
-        <Box>
-            <Typography variant='h5' fontWeight='900'>로그인</Typography>
-            <TextField sx={{mt: '40px'}} fullWidth label="이메일 주소" variant="standard" onChange={(event) => setEmail(event.target.value)} />
-            <FormControl fullWidth variant="standard" sx={{ mt: '40px' }}>
-                <InputLabel>비밀번호</InputLabel>
-                <Input
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                    </InputAdornment>
-                    }
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-            </FormControl>
-        </Box>
-        <Box>
-            <Button sx={{mb: '20px'}} fullWidth variant="contained" size='large' onClick={onLoginHandler}>로그인</Button>
-            <Typography textAlign={'center'}>신규사용자 이신가요? 
-                <Typography component='span' fontWeight={900} onClick={() => setLoginView(false)}> 회원가입</Typography>
-            </Typography>
-        </Box>
+    <Box
+      display="flex"
+      sx={{
+        height: "100%",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <Box>
+        <Typography variant="h5" fontWeight="900">
+          로그인
+        </Typography>
+        <TextField
+          sx={{ mt: "40px" }}
+          fullWidth
+          label="이메일 주소"
+          variant="standard"
+          onChange={(event) => setEmail(event.target.value)}
+          onKeyPress={(event) => onEmailKeyPressHandler(event)}
+        />
+        <FormControl fullWidth variant="standard" sx={{ mt: "40px" }}>
+          <InputLabel>비밀번호</InputLabel>
+          <Input
+            ref = {passwordRef}
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </FormControl>
+      </Box>
+      <Box>
+        <Button
+          sx={{ mb: "20px" }}
+          fullWidth
+          variant="contained"
+          size="large"
+          onClick={onLoginHandler}
+        >
+          로그인
+        </Button>
+        <Typography textAlign={"center"}>
+          신규사용자 이신가요?
+          <Typography
+            component="span"
+            fontWeight={900}
+            onClick={() => setLoginView(false)}
+          >
+            {" "}
+            회원가입
+          </Typography>
+        </Typography>
+      </Box>
     </Box>
-  )
+  );
 }

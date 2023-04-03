@@ -22,6 +22,8 @@ export const POST_BOARD_URL = `${HOST}api/board/`;
 export const LIKE_URL = `${HOST}api/board/like`;
 export const POST_COMMENT_URL = `${HOST}api/board/comment`;
 
+export const PATCH_BOARD_URL = `${HOST}api/board/`
+
 export const GET_BOARD_URL = (boardNumber: string) => `${HOST}api/board/${boardNumber}`;
 export const GET_SEARCH_LIST_URL = (content: string) => `${HOST}api/board/search-list/${content}`;
 export const GET_TOP15_RELATED_SEARCH_WORD_URL = (content: string) => `${HOST}api/board/top15-related-search-word/${content}`;

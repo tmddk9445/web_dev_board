@@ -1,18 +1,22 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import { Box, Divider, Fab, IconButton, Input } from '@mui/material';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import CreateIcon from '@mui/icons-material/Create';
-import { useNavigate } from 'react-router-dom';
+
 import axios, { AxiosResponse } from 'axios';
 import { PostBoardResponseDto } from 'src/apis/response/board';
 import ResponseDto from 'src/apis/response';
-import { useCookies } from 'react-cookie';
+
 import { PostBoardDto } from 'src/apis/request/board';
 import { authorizationHeader, FILE_UPLOAD_URL, multipartHeader, POST_BOARD_URL } from 'src/constants/api';
-import { error } from 'console';
+
 
 export default function BoardWriteView() {
+
+  const navigator = useNavigate();
 
   const imageRef = useRef<HTMLInputElement | null>(null);
 
@@ -20,8 +24,6 @@ export default function BoardWriteView() {
   const [boardTitle, setBoardTitle] = useState<string>('');
   const [boardContent, setBoardContent] = useState<string>('');
   const [boardImgUrl, setBoardImgUrl] = useState<string>('');
-
-  const navigator = useNavigate();
 
   const accessToken = cookies.accessToken;
 
