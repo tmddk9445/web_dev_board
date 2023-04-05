@@ -1,5 +1,9 @@
 package com.jihoon.board.service.implementation;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,9 +246,12 @@ public class BoardServiceImplements implements BoardService {
   public ResponseDto<List<GetTop3ListResponseDto>> getTop3List() {
         
     List<GetTop3ListResponseDto> data = null;
+    Date aWeekAgoDate = Date.from(Instant.now().minus(7, ChronoUnit.DAYS));
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String aWeekAgo = simpleDateFormat.format(aWeekAgoDate);
 
     try {
-        List<BoardEntity> boardList = boardRepository.findTop3ByOrderByLikeCountDesc();
+        List<BoardEntity> boardList = boardRepository.findTop3ByBoardWriteDatetimeGreaterThanOrderByLikeCountDesc(aWeekAgo);
         data = GetTop3ListResponseDto.copyList(boardList);
 
     } catch (Exception exception) {

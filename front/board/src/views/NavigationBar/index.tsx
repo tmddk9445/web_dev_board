@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Button, FormControl, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
-
 import SearchIcon from '@mui/icons-material/Search';
+
 import { useUserStore } from 'src/stores';
 
 export default function NavigationBar() {
 
+  //          Hook          //
   const navigator = useNavigate();
   const path = useLocation();
 
@@ -18,12 +20,17 @@ export default function NavigationBar() {
 
   const [content, setContent] = useState<string>('');
 
+  //          Event Handler          //
+  const onSearchKeyPressHandler = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'Enter') return;
+    onSearchHandler(); 
+  }
+
   const onSearchHandler = () => {
     if (!content.trim()) {
       alert('검색어를 입력하세요.');
       return;
     }
-
     navigator(`/board/search/${content}`);
   }
 
@@ -54,6 +61,7 @@ export default function NavigationBar() {
                   </InputAdornment>
                 }
                 onChange={(event) => setContent(event.target.value)}
+                onKeyPress={(event) => onSearchKeyPressHandler(event)}
               />
             </FormControl>
             {path.pathname !== '/auth' && 
