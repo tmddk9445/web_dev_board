@@ -46,7 +46,7 @@ public class Example01 {
 		// 다형성이 적용되지 않기 때문에
 		// 선언시 사용한 타입변수와 생성시 사용하는 타입변수가 같아야 함
 		Object obj = new Developer();
-		// MyInfo<Object, Object> info3 = new MyInfo<Devloper, Integer>();
+		MyInfo<Object, Object> info3 = new MyInfo<Devloper, Integer>();
 		
 		// ? 키워드를 사용하여 타입변수의 다형성을 적용시킬 수 있음
 		MyInfo<?, ?> info4 = new MyInfo<Developer, Integer>();

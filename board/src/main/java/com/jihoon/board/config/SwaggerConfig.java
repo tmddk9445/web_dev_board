@@ -14,22 +14,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-  
-  @Bean
-  protected Docket apiDocket() {
-    return new Docket(DocumentationType.SWAGGER_2)
-      .apiInfo(apiInfo())
-      .select()
-      .apis(RequestHandlerSelectors.any())
-      .paths(PathSelectors.any())
-      .build();
-  }
 
-  private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-      .title("SeungA's board REST API")
-      .description("Spring Boot로 작성한 REST API 명세서")
-      .version("1.0.0")
-      .build();
-  }
+    @Bean
+    protected Docket apiDocket() {
+        return new Docket(DocumentationType.SWAGGER_2)
+            .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.any())
+            .paths(PathSelectors.any())
+            .build();
+    }
+    
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+            .title("Hoon`s board REST API")
+            .description("Spring boot로 작성한 REST API 명세서")
+            .version("1.0.0")
+            .build();
+    }
+
 }

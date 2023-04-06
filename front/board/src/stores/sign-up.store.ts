@@ -17,6 +17,7 @@ interface ISignUpStore {
     telNumber: string;
     address: string;
     addressDetail: string;
+    emailMessage: string;
     setEmail: (str: string) => void;
     setPassword: (str: string) => void;
     setPasswordCheck: (str: string) => void;
@@ -35,7 +36,13 @@ const useStore = create<ISignUpStore>((set) => ({
     telNumber: '',
     address: '',
     addressDetail: '',
-    setEmail: (email) => set((state) => ({...state, email})),
+    emailMessage: '',
+    setEmail: (email) => {
+        const emailValidator = /^[A-Za-z0-9]*@[A-Za-z0-9]([-.]?[A-Za-z0-9])*\.[A-Za-z0-9]{2,3}$/;
+        const isMatched = emailValidator.test(email);
+        const emailMessage = isMatched ? '' : '이메일 주소 포맷이 맞지 않습니다.';
+        set((state) => ({...state, email, emailMessage}))
+    },
     setPassword: (password) => set((state) => ({...state, password})),
     setPasswordCheck: (passwordCheck) => set((state) => ({...state, passwordCheck})),
     setNickname: (nickname) => set((state) => ({...state, nickname})),

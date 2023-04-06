@@ -12,10 +12,9 @@ import com.jihoon.board.entity.primaryKey.LikyPk;
 @Repository
 public interface LikyRepository extends JpaRepository<LikyEntity, LikyPk> {
     
-  public List<LikyEntity> findByBoardNumber(int boardNumber);
+    public List<LikyEntity> findByBoardNumber(int boardNumber);
+    public LikyEntity findByUserEmailAndBoardNumber(String userEmail, int boardNumber);
 
-  public LikyEntity findByUserEmailAndBoardNumber(String userEmail, int boardNumber);
-
-  @Transactional
-  public void deleteByBoardNumber(int boardNumber);
+    @Transactional
+    public void deleteByBoardNumber(int boardNumber);
 }

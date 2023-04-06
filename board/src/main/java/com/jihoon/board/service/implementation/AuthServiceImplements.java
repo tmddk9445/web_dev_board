@@ -19,77 +19,73 @@ import com.jihoon.board.service.AuthService;
 @Service
 public class AuthServiceImplements implements AuthService {
 
-  @Autowired private TokenProvider tokenProvider;
-  @Autowired private UserRepository userRepository;
-  
-  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-  
-  public ResponseDto<SignUpResponseDto> signUp(SignUpDto dto) {
+    @Autowired private TokenProvider tokenProvider;
+    @Autowired private UserRepository userRepository;
 
-    SignUpResponseDto data = null;
-    
-    String email = dto.getEmail();
-    String telNumber = dto.getTelNumber();
-    String password = dto.getPassword();
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    try {
+    public ResponseDto<SignUpResponseDto> signUp(SignUpDto dto) {
 
-      boolean hasEmail = userRepository.existsByEmail(email);
-      if (hasEmail) return ResponseDto.setFailed(ResponseMessage.EXIST_EMAIL);
+        SignUpResponseDto data = null;
 
-      boolean hasTelNumber = userRepository.existsByTelNumber(telNumber);
-      if (hasTelNumber) return ResponseDto.setFailed(ResponseMessage.EXIST_TEL_NUMBER);
+        String email = dto.getEmail();
+        String telNumber = dto.getTelNumber();
+        String password = dto.getPassword();
 
-      String encodedPassword = passwordEncoder.encode(password);
-      dto.setPassword(encodedPassword);
+        try {
+            boolean hasEmail = userRepository.existsByEmail(email);
+            if (hasEmail) return ResponseDto.setFailed(ResponseMessage.EXIST_EMAIL);
 
-      UserEntity userEntity = new UserEntity(dto);
-      userRepository.save(userEntity);
+            boolean hasTelNumber = userRepository.existsByTelNumber(telNumber);
+            if (hasTelNumber) return ResponseDto.setFailed(ResponseMessage.EXIST_TEL_NUMBER);
 
-      data = new SignUpResponseDto(true);
+            String encodedPassword = passwordEncoder.encode(password);
+            dto.setPassword(encodedPassword);
 
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+            UserEntity userEntity = new UserEntity(dto);
+            userRepository.save(userEntity);
+
+            data = new SignUpResponseDto(true);
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
     }
 
-    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-  }
+    public ResponseDto<SignInResponseDto> signIn(SignInDto dto) {
 
-  public ResponseDto<SignInResponseDto> signIn(SignInDto dto) {
+        SignInResponseDto data = null;
 
-    SignInResponseDto data = null;
+        String email = dto.getEmail();
+        String password = dto.getPassword();
 
-    UserEntity userEntity = null;
+        UserEntity userEntity = null;
 
-    String email = dto.getEmail();
-    String password = dto.getPassword();
+        try {
+            userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.setFailed(ResponseMessage.FAIL_SIGN_IN);
 
-    try {
+            boolean isEqualPassword = passwordEncoder.matches(password, userEntity.getPassword());
+            if (!isEqualPassword) return ResponseDto.setFailed(ResponseMessage.FAIL_SIGN_IN);
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
 
-      userEntity = userRepository.findByEmail(email);
-      if (userEntity == null) return ResponseDto.setFailed(ResponseMessage.FAIL_SIGN_IN);
+        try {
+            String token = tokenProvider.create(email);
+            data = new SignInResponseDto(userEntity, token);
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.FAIL_SIGN_IN);
+        }
 
-      boolean isEqualPassword = passwordEncoder.matches(password, userEntity.getPassword());
-      if(!isEqualPassword) return ResponseDto.setFailed(ResponseMessage.FAIL_SIGN_IN);
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
 
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
     }
-
-    try {
-
-      String token = tokenProvider.create(email);
-
-      data = new SignInResponseDto(userEntity, token);
-      
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.setFailed(ResponseMessage.FAIL_SIGN_IN);
-    }
-    
-    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-  }
 
 }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetUserResponseDto {
-  @ApiModelProperty(value="사용자 이메일", example="jiraynor@naver.com", required=true)
+    @ApiModelProperty(value="사용자 이메일", example="jiraynor@naver.com", required=true)
     private String email;
 
     @ApiModelProperty(value="사용자 닉네임", example="jiraynor", required=true)

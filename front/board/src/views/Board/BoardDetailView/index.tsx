@@ -70,10 +70,7 @@ export default function BoardDetailView() {
     }
 
     const onLikeHandler = () => {
-        if (!accessToken) {
-            alert('로그인이 필요합니다.');
-            return;
-        }
+        if (!accessToken) return;
 
         const data: LikeDto = { boardNumber: parseInt(boardNumber as string) };
         axios.post(LIKE_URL, data, authorizationHeader(accessToken))
@@ -272,15 +269,16 @@ export default function BoardDetailView() {
                     <Pagination page={pageNumber} count={getPageCount(boardList, COUNT)} onChange={(event, value) => onPageHandler(value)} />
                 </Box>
                 { accessToken && (
-                  <Box>
-                      <Card variant='outlined' sx={{ p: '20px' }}>
-                          <Input minRows={3} multiline disableUnderline fullWidth value={commentContent} onChange={(event) => setCommentContent(event.target.value)} />
-                          <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                              <Button sx={{ p: '4px 23px', backgroundColor: '#000000', fontSize: '14px', fontWeight: 400, color: '#ffffff', borderRadius: '46px' }} onClick={() => onPostCommentHandler()}>댓글달기</Button>
-                          </Box>
-                      </Card>
-                  </Box>
+                    <Box>
+                        <Card variant='outlined' sx={{ p: '20px' }}>
+                            <Input minRows={3} multiline disableUnderline fullWidth value={commentContent} onChange={(event) => setCommentContent(event.target.value)} />
+                            <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                                <Button sx={{ p: '4px 23px', backgroundColor: '#000000', fontSize: '14px', fontWeight: 400, color: '#ffffff', borderRadius: '46px' }} onClick={() => onPostCommentHandler()}>댓글달기</Button>
+                            </Box>
+                        </Card>
+                    </Box>
                 ) }
+                
             </Box>
         ) }
         </Box>

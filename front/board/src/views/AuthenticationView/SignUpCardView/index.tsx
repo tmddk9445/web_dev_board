@@ -162,10 +162,10 @@ function SecondPage({ signUpError }: SecondPageProps) {
         />
       </FormControl>
       <TextField sx={{mt: '40px'}} error={signUpError} fullWidth label="상세 주소*" variant="standard" value={addressDetail} onChange={(event) => setAddressDetail(event.target.value)} />
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: '24px'}}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: '24px' }}>
         <Checkbox color="default" />
-        <Typography sx={{ mr: '4px', color: 'red', fontWeight: 400 }}>개인정보동의</Typography>
-        <Typography sx={{ fontWeight: 700 }}>더보기&gt;</Typography>
+        <Typography sx={{mr: '4px', color: 'red', fontWeight: 400}}>개인정보동의</Typography>
+        <Typography sx={{fontWeight: 700}}>더보기&gt;</Typography>
       </Box>
     </Box>
   );

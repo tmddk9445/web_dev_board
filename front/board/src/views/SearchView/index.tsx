@@ -60,11 +60,11 @@ export default function SearchView() {
 
     //          Use Effect          //
     useEffect(() => {
-        if(loadFlag) {
-          loadFlag = false;
-          getSearchList();
-          getTop15RelatedSearchWord();
-          setPreviousSearchWord(content as string);
+        if (loadFlag) {
+            loadFlag = false;
+            getSearchList();
+            getTop15RelatedSearchWord();
+            setPreviousSearchWord(content as string);
         }
     }, [content]);
 

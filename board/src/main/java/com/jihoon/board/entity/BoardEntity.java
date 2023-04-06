@@ -36,7 +36,7 @@ public class BoardEntity {
     private int commentCount;
     private int likeCount;
 
-    public BoardEntity (UserEntity userEntity, PostBoardDto postBoardDto) {
+    public BoardEntity(UserEntity userEntity, PostBoardDto postBoardDto) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -45,14 +45,11 @@ public class BoardEntity {
         this.boardImgUrl = postBoardDto.getBoardImgUrl();
         this.boardWriteDatetime = simpleDateFormat.format(now);
         this.viewCount = 0;
-
         this.writerEmail = userEntity.getEmail();
         this.writerNickname = userEntity.getNickname();
         this.writerProfileUrl = userEntity.getProfile();
-
-        this.commentCount =  0;
+        this.commentCount = 0;
         this.likeCount = 0;
-
     }
 
     public void patch(PatchBoardDto dto) {

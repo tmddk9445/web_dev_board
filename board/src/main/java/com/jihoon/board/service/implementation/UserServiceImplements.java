@@ -14,49 +14,49 @@ import com.jihoon.board.service.UserService;
 
 @Service
 public class UserServiceImplements implements UserService {
-  
-  @Autowired UserRepository userRepository;
-
-  public ResponseDto<PatchProfileResponseDto> patchProfile(String email, PatchProfileDto dto) {
     
-    PatchProfileResponseDto data = null;
-    String profile = dto.getProfile();
+    @Autowired private UserRepository userRepository;
 
-    try {
+    public ResponseDto<PatchProfileResponseDto> patchProfile(String email, PatchProfileDto dto) {
 
-      UserEntity userEntity = userRepository.findByEmail(email);
-      if (userEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+        PatchProfileResponseDto data = null;
 
-      userEntity.setProfile(profile);
-      userRepository.save(userEntity);
+        String profile = dto.getProfile();
 
-      data = new PatchProfileResponseDto(userEntity);
+        try {
 
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+            
+            userEntity.setProfile(profile);
+            userRepository.save(userEntity);
+
+            data = new PatchProfileResponseDto(userEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
+
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
+
     }
 
-    return ResponseDto.setSuccess(ResponseMessage.SUCCESS , data);
-  }
+    public ResponseDto<GetUserResponseDto> getUser(String email) {
+        
+        GetUserResponseDto data = null;
 
-  @Override
-  public ResponseDto<GetUserResponseDto> getUser(String email) {
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
+            
+            data = new GetUserResponseDto(userEntity);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        }
 
-    GetUserResponseDto data = null;
-
-    try {
-
-      UserEntity userEntity = userRepository.findByEmail(email);
-      if(userEntity == null) return ResponseDto.setFailed(ResponseMessage.NOT_EXIST_USER);
-
-      data = new GetUserResponseDto(userEntity);
-
-    } catch (Exception exception) {
-      exception.printStackTrace();
-      return ResponseDto.setFailed(ResponseMessage.DATABASE_ERROR);
+        return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
     }
-    return ResponseDto.setSuccess(ResponseMessage.SUCCESS, data);
-  }
 
 }

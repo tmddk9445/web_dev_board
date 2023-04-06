@@ -11,7 +11,12 @@ import com.jihoon.board.entity.resultSet.SearchWordResultSet;
 
 @Repository
 public interface SearchWordLogRepository extends JpaRepository<SearchWordLogEntity, Integer> {
+    @Query(value=
+                "SELECT search_word AS searchWord, count(search_word) AS count " + 
+                "FROM Searchwordlog " + 
+                "GROUP BY search_word " + 
+                "ORDER BY count DESC " + 
+                "LIMIT 15", nativeQuery=true)
+    public List<SearchWordResultSet> findTop15();
 
-  @Query(value = "SELECT search_word AS searchWord, count(search_word) AS count FROM Searchwordlog Group By search_word ORDER BY count DESC LIMIT 15", nativeQuery = true)
-  public List<SearchWordResultSet> findTop15();
 }

@@ -1,7 +1,9 @@
 package com.jihoon.board.provider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,14 +13,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 @Data
 @AllArgsConstructor
 class SocketGroup {
-  private String room;
-  private WebSocketSession webSocketSession;
+    private String room;
+    private WebSocketSession webSocketSession;
 }
-
 @Component
 public class SocketProvider extends TextWebSocketHandler {
     
@@ -35,7 +35,7 @@ public class SocketProvider extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession webSocketSession, TextMessage textMessage) throws Exception {
-        // String messagePayload = textMessage.getPayload();
+        String messagePayload = textMessage.getPayload();
         String room = webSocketSession.getHandshakeHeaders().getFirst("room");
 
         for (SocketGroup socketGroup: sessionList) {

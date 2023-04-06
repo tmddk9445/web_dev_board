@@ -33,8 +33,8 @@ public class CommentEntity {
 
     public CommentEntity(UserEntity userEntity, PostCommentDto dto) {
         Date now = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        
         this.writerEmail = userEntity.getEmail();
         this.boardNumber = dto.getBoardNumber();
         this.writeDatetime = simpleDateFormat.format(now);

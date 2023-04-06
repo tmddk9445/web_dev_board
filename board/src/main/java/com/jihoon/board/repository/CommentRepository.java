@@ -11,8 +11,9 @@ import com.jihoon.board.entity.CommentEntity;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
     
-  public List<CommentEntity> findByBoardNumberOrderByWriteDatetimeDesc(int boardNumber);
+    public List<CommentEntity> findByBoardNumberOrderByWriteDatetimeDesc(int boardNumber);
+    
+    @Transactional
+    public void deleteByBoardNumber(int boardNumber);
 
-  @Transactional
-  public void deleteByBoardNumber(int boardNumber);
 }

@@ -23,7 +23,7 @@ export default function NavigationBar() {
   //          Event Handler          //
   const onSearchKeyPressHandler = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key !== 'Enter') return;
-    onSearchHandler(); 
+    onSearchHandler();
   }
 
   const onSearchHandler = () => {

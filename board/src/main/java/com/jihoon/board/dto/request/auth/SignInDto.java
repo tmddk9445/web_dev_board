@@ -14,16 +14,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class SignInDto {
+    @ApiModelProperty(value="사용자 이메일", example="jiraynor@naver.com", required=true)
+    @NotBlank
+    @Email
+    @Length(max=40)
+    private String email;
 
-  @ApiModelProperty(value = "사용자 이메일", example = "jiraynor@naver.com", required = true)
-  @NotBlank
-  @Email
-  @Length(max=40)
-  private String Email;
-
-  @ApiModelProperty(value = "사용자 비밀번호", example = "password11!", required = true)
-  @NotBlank
-  @Length(min=8, max=20)
-  private String password;
-  
+    @ApiModelProperty(value="비밀번호", example="P!ssw0rd", required=true)
+    @NotBlank
+    @Length(min=8, max=20)
+    private String password;
 }

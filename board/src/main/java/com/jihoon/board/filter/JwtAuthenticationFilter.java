@@ -32,17 +32,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
 
             String jwt = parseToken(request);
+
             boolean hasJwt = jwt != null && !jwt.equalsIgnoreCase("null");
-            
+
             if (!hasJwt) {
                 filterChain.doFilter(request, response);
                 return;
             }
-
             String email = tokenProvider.validate(jwt);
 
-            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null,
-                    AuthorityUtils.NO_AUTHORITIES);
+            AbstractAuthenticationToken authenticationToken = 
+                new UsernamePasswordAuthenticationToken(email, null, AuthorityUtils.NO_AUTHORITIES);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
