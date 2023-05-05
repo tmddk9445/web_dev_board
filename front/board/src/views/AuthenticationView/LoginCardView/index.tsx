@@ -1,4 +1,10 @@
-import { Dispatch, KeyboardEvent, SetStateAction, useRef, useState } from "react";
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useRef,
+  useState,
+} from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -42,15 +48,15 @@ export default function LoginCardView({ setLoginView }: Props) {
 
   //          Event Handler          //
   const onEmailKeyPressHandler = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Enter') return;
+    if (event.key !== "Enter") return;
     if (!passwordRef.current) return;
     (passwordRef as any).current?.lastChild?.firstChild?.focus();
-  }
+  };
 
   const onPasswordKeyPressHandler = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Enter') return;
+    if (event.key !== "Enter") return;
     onLoginHandler();
-  }
+  };
 
   const onLoginHandler = () => {
     //? email 입력했는지 검증 / password 입력했는지 검증
@@ -68,7 +74,8 @@ export default function LoginCardView({ setLoginView }: Props) {
 
   //          Response Handler          //
   const signInResponseHandler = (response: AxiosResponse<any, any>) => {
-    const { result, message, data } = response.data as ResponseDto<SignInResponseDto>;
+    const { result, message, data } =
+      response.data as ResponseDto<SignInResponseDto>;
     if (!result || !data) {
       setLoginError(true);
       return;
@@ -76,7 +83,7 @@ export default function LoginCardView({ setLoginView }: Props) {
 
     const { token, expiredTime, ...user } = data;
     const expires = getExpires(expiredTime);
-    setCookie("accessToken", token, { expires, path: '/' });
+    setCookie("accessToken", token, { expires, path: "/" });
     setUser(user);
     navigator("/");
   };
@@ -108,7 +115,13 @@ export default function LoginCardView({ setLoginView }: Props) {
           onChange={(event) => setEmail(event.target.value)}
           onKeyPress={(event) => onEmailKeyPressHandler(event)}
         />
-        <FormControl error={loginError} ref={passwordRef} fullWidth variant="standard" sx={{ mt: "40px" }}>
+        <FormControl
+          error={loginError}
+          ref={passwordRef}
+          fullWidth
+          variant="standard"
+          sx={{ mt: "40px" }}
+        >
           <InputLabel>비밀번호</InputLabel>
           <Input
             type={showPassword ? "text" : "password"}
@@ -125,12 +138,16 @@ export default function LoginCardView({ setLoginView }: Props) {
         </FormControl>
       </Box>
       <Box>
-        { loginError && (
-          <Box sx={{ mb: '12px' }}>
-            <Typography sx={{fontSize: '12px', color: 'red', opacity: '0.7'}}>이메일 주소 또는 비밀번호를 잘못 입력했습니다.</Typography>
-            <Typography sx={{fontSize: '12px', color: 'red', opacity: '0.7'}}>입력하신 내용을 다시 확인해 주세요.</Typography>
+        {loginError && (
+          <Box sx={{ mb: "12px" }}>
+            <Typography sx={{ fontSize: "12px", color: "red", opacity: "0.7" }}>
+              이메일 주소 또는 비밀번호를 잘못 입력했습니다.
+            </Typography>
+            <Typography sx={{ fontSize: "12px", color: "red", opacity: "0.7" }}>
+              입력하신 내용을 다시 확인해 주세요.
+            </Typography>
           </Box>
-        ) }
+        )}
         <Button
           sx={{ mb: "20px" }}
           fullWidth

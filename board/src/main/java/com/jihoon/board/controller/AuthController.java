@@ -20,7 +20,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
 @RestController
 @RequestMapping(ApiPattern.AUTH)
 @Api(description = "인증 모듈")

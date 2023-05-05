@@ -1,4 +1,4 @@
-import GetUserResponseDto from './Get-User.response.dto';
+import GetUserResponseDto from './get-User.response.dto';
 import PatchProfileResponseDto from './Patch-Profile.response.dto';
 
 export type { GetUserResponseDto, PatchProfileResponseDto };
